@@ -43,7 +43,7 @@ export default function IntroOverlay({ onComplete }: Props) {
       {/* Mirrors the flex:1 name section so text lands at the same Y as the real name */}
       <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center" }}>
         <TegakiRenderer
-          font={caveat}
+          font={{ ...caveat, features: [...caveat.features] }}
           style={{
             fontSize: "clamp(3rem, 8vw, 5.5rem)",
             color: "#ffffff",
