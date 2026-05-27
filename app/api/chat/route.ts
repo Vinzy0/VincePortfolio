@@ -6,32 +6,40 @@ import { PERSONA } from "@/lib/persona";
 import { sanitizeInput, sanitizeChunks } from "@/lib/sanitize";
 import { checkRateLimit } from "@/lib/rate-limit";
 
+export const dynamic = "force-dynamic";
+
 interface Message {
   role: "user" | "assistant";
   content: string;
 }
 
-const client = new OpenAI({
-  baseURL: "https://openrouter.ai/api/v1",
-  apiKey: process.env.OPENROUTER_API_KEY,
-  timeout: 30 * 1000,
-  defaultHeaders: {
-    "HTTP-Referer": "https://vincepedres.com",
-    "X-Title": "Vince Pedres Portfolio",
-  },
-});
+function getClient() {
+  return new OpenAI({
+    baseURL: "https://openrouter.ai/api/v1",
+    apiKey: process.env.OPENROUTER_API_KEY,
+    timeout: 30 * 1000,
+    defaultHeaders: {
+      "HTTP-Referer": "https://vincepedres.com",
+      "X-Title": "Vince Pedres Portfolio",
+    },
+  });
+}
 
-const supabase = createClient(
-  process.env.SUPABASE_URL!,
-  process.env.SUPABASE_ANON_KEY!
-);
+function getSupabase() {
+  return createClient(
+    process.env.SUPABASE_URL!,
+    process.env.SUPABASE_ANON_KEY!
+  );
+}
 
-const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY!);
+function getGenAI() {
+  return new GoogleGenerativeAI(process.env.GOOGLE_API_KEY!);
+}
 
 // ── RAG Functions ───────────────────────────────────────────────────────────
 
 async function embedQuery(text: string): Promise<number[]> {
-  const model = genAI.getGenerativeModel({ model: "gemini-embedding-001" });
+  const model = getGenAI().getGenerativeModel({ model: "gemini-embedding-001" });
   const result = await model.embedContent(text);
   return result.embedding.values;
 }
@@ -39,7 +47,7 @@ async function embedQuery(text: string): Promise<number[]> {
 async function searchKnowledgeBase(query: string): Promise<string[]> {
   const embedding = await embedQuery(query);
 
-  const { data, error } = await supabase.rpc("match_documents", {
+  const { data, error } = await getSupabase().rpc("match_documents", {
     query_embedding: embedding,
     match_threshold: 0.3,
     match_count: 5,
@@ -141,7 +149,7 @@ export async function POST(req: NextRequest) {
       : userMessage;
 
     // ── Build Messages Array ──────────────────────────────────────────────
-    const stream = await client.chat.completions.create({
+    const stream = await getClient().chat.completions.create({
       model: "deepseek/deepseek-chat-v3-0324",
       max_tokens: 512,
       stream: true,
