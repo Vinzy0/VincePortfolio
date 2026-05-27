@@ -1,0 +1,103 @@
+:root {
+  --bg: #020a18;
+  --bg-card: rgba(20, 20, 45, 0.85);
+  --ink: #e8e6f0;
+  --ink-muted: rgba(232, 230, 240, 0.55);
+  --blue: #3a5a8c;
+  --blue-dark: #5b8dd9;
+  --mint: #2a5a3a;
+  --mint-dark: #4ae070;
+  --orange: #6a4a2a;
+  --orange-dark: #e0a050;
+  --pink: #6a2a3a;
+  --pink-dark: #e05080;
+  --purple: #4a2a6a;
+  --purple-dark: #a050e0;
+  --yellow: #e0c040;
+  --yellow-light: #f0e080;
+  --stroke: rgba(232, 230, 240, 0.7);
+  --font: var(--font-nunito), 'Nunito', sans-serif;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+button, a, [role="button"] {
+  cursor: pointer;
+}
+
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+:focus-visible {
+  outline: 2px solid rgba(232, 230, 240, 0.5);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font);
+  background-color: var(--bg);
+  color: var(--ink);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* starfield animations */
+@keyframes twinkle-bg {
+  from { opacity: 0.04; }
+  to   { opacity: 0.18; }
+}
+@keyframes twinkle-mid {
+  from { opacity: 0.15; }
+  to   { opacity: 0.52; }
+}
+@keyframes twinkle-fg {
+  from { opacity: 0.42; }
+  to   { opacity: 1.0; }
+}
+@keyframes shoot {
+  0%   { transform: rotate(-42deg) translateX(0);     opacity: 0; }
+  1%   { opacity: 1; }
+  7%   { transform: rotate(-42deg) translateX(260px); opacity: 0; }
+  100% { transform: rotate(-42deg) translateX(260px); opacity: 0; }
+}
+
+/* custom scrollbar inside chat */
+.chat-messages::-webkit-scrollbar {
+  width: 5px;
+}
+.chat-messages::-webkit-scrollbar-track {
+  background: transparent;
+}
+.chat-messages::-webkit-scrollbar-thumb {
+  background: rgba(232,230,240,0.15);
+  border-radius: 3px;
+}
+
+/* nav link hover — wavy gold underline */
+.nav-link {
+  color: var(--ink-muted);
+  text-decoration: none;
+  text-underline-offset: 4px;
+  transition: color 0.2s ease;
+}
+.nav-link:hover,
+.nav-link:focus-visible {
+  color: var(--yellow);
+  text-decoration: underline wavy var(--yellow);
+}
+
+/* sticky note rotation helpers */
+.note-tilt-l { transform: rotate(-2.5deg); }
+.note-tilt-r { transform: rotate(2deg); }
+.note-tilt-r2 { transform: rotate(3.5deg); }
+.note-tilt-l2 { transform: rotate(-1.5deg); }
