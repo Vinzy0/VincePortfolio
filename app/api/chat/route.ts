@@ -143,7 +143,7 @@ export async function POST(req: NextRequest) {
 
     // ── Build Messages Array ──────────────────────────────────────────────
     const stream = await getClient().chat.completions.create({
-      model: "anthropic/claude-3.5-haiku",
+      model: "deepseek/deepseek-v4-pro",
       max_tokens: 512,
       stream: true,
       messages: [
