@@ -12,6 +12,7 @@ import ProjectCard from "./cards/ProjectCard";
 import ProjectList from "./cards/ProjectList";
 import SkillCard from "./cards/SkillCard";
 import ContactCard from "./cards/ContactCard";
+import ResumeCard from "./cards/ResumeCard";
 
 interface Message {
   role: "user" | "assistant";
@@ -178,6 +179,7 @@ const ChatBot = forwardRef<ChatBotHandle, ChatBotProps>(({ onFirstMessage, chips
         if (seg.name === "project" && seg.param) return <ProjectCard key={i} projectId={seg.param} />;
         if (seg.name === "skills" && seg.param) return <SkillCard key={i} category={seg.param as "languages" | "aiml" | "frontend" | "backend" | "tools"} />;
         if (seg.name === "contact") return <ContactCard key={i} />;
+        if (seg.name === "resume") return <ResumeCard key={i} />;
         return null;
       }
       return <span key={i}>{renderText(seg.content, i)}</span>;
